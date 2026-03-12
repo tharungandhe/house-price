@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: house_price_project
+Version: 0.0.1
+Author: Tharun
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: scikit-learn
+Requires-Dist: flask
+Requires-Dist: dill
+Requires-Dist: joblib
+Dynamic: author
+Dynamic: requires-dist
