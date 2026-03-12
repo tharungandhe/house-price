@@ -1,5 +1,5 @@
-from flask import Flask,request,render_template
-import pandas as pd
+from flask import Flask,request,render_template # type: ignore
+import pandas as pd  # type: ignore
 from src.pipeline.prediction_pipeline import PredictionPipeline
 
 app=Flask(__name__)

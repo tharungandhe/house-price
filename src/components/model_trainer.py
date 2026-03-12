@@ -1,5 +1,5 @@
-from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression # type: ignore
+from sklearn.ensemble import RandomForestRegressor # type: ignore
 from src.utils import evaluate_model, save_object
 
 
