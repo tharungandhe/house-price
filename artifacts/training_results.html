@@ -1,0 +1,60 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Model Training Results</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 40px;
+                background-color: #f4f4f4;
+            }
+            h1 {
+                color: #333;
+            }
+            .report {
+                background-color: white;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            th, td {
+                border: 1px solid #ddd;
+                padding: 12px;
+                text-align: left;
+            }
+            th {
+                background-color: #4CAF50;
+                color: white;
+            }
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+            .best-model {
+                background-color: #fff3cd;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="report">
+            <h1>Model Training Results</h1>
+            <h2>Best Model: <span style="color: #4CAF50;">RandomForest</span></h2>
+            <h3>Model Performance Metrics</h3>
+            <table>
+                <tr>
+                    <th>Model Name</th>
+                    <th>R² Score</th>
+                </tr>
+    <tr><td>LinearRegression</td><td>0.6144</td></tr><tr class="best-model"><td>RandomForest</td><td>0.8092</td></tr>
+            </table>
+            <p><em>Training completed successfully!</em></p>
+        </div>
+    </body>
+    </html>
+    

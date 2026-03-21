@@ -5,7 +5,7 @@ class DataIngestion:
 
     def initiate_data_ingestion(self):
 
-        df=pd.read_csv("houseing.csv")
+        df=pd.read_csv("house/1553768847-housing.csv")
 
         os.makedirs("artifacts",exist_ok=True)
 

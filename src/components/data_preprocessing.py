@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 import joblib
@@ -12,18 +13,23 @@ class DataPreprocessing:
         train_df=pd.read_csv(train_path)
         test_df=pd.read_csv(test_path)
 
-        X_train=train_df.drop("price",axis=1)
-        y_train=train_df["price"]
+        X_train=train_df.drop("median_house_value",axis=1)
+        y_train=train_df["median_house_value"]
 
-        X_test=test_df.drop("price",axis=1)
-        y_test=test_df["price"]
+        X_test=test_df.drop("median_house_value",axis=1)
+        y_test=test_df["median_house_value"]
 
-        num_features=X_train.columns
+        # Select only numeric columns
+        num_features=X_train.select_dtypes(include=['int64', 'float64']).columns.tolist()
 
-        scaler=StandardScaler()
+        # Create a pipeline with imputer and scaler
+        numeric_pipeline=Pipeline([
+            ("imputer",SimpleImputer(strategy='mean')),
+            ("scaler",StandardScaler())
+        ])
 
         preprocessor=ColumnTransformer([
-            ("scaler",scaler,num_features)
+            ("num",numeric_pipeline,num_features)
         ])
 
         X_train=preprocessor.fit_transform(X_train)

@@ -16,4 +16,6 @@ class TrainPipeline:
 
         trainer=ModelTrainer()
 
-        trainer.initiate_model_trainer(X_train,X_test,y_train,y_test)
+        best_model, report, best_model_name=trainer.initiate_model_trainer(X_train,X_test,y_train,y_test)
+        
+        return best_model, report, best_model_name

@@ -1,5 +1,5 @@
-from sklearn.linear_model import LinearRegression # type: ignore
-from sklearn.ensemble import RandomForestRegressor # type: ignore
+from sklearn.linear_model import LinearRegression 
+from sklearn.ensemble import RandomForestRegressor 
 from src.utils import evaluate_model, save_object
 
 
@@ -26,4 +26,4 @@ class ModelTrainer:
         # save model
         save_object("artifacts/model.pkl", best_model)
 
-        return best_model
+        return best_model, report, best_model_name

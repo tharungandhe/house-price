@@ -1,0 +1,139 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>House Price Prediction - Results</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .container {
+                background: white;
+                padding: 40px;
+                border-radius: 10px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                max-width: 600px;
+                width: 90%;
+            }
+            h1 {
+                text-align: center;
+                color: #333;
+                margin-bottom: 30px;
+            }
+            .input-section {
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 5px;
+                margin-bottom: 20px;
+            }
+            .input-section h2 {
+                color: #666;
+                margin-top: 0;
+            }
+            .input-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+            .input-item {
+                padding: 10px;
+                background: white;
+                border-radius: 3px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }
+            .label {
+                font-weight: bold;
+                color: #666;
+                font-size: 12px;
+                text-transform: uppercase;
+                margin-bottom: 5px;
+            }
+            .value {
+                color: #333;
+                font-size: 16px;
+            }
+            .result-section {
+                text-align: center;
+                padding: 30px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 5px;
+                color: white;
+            }
+            .result-label {
+                font-size: 18px;
+                margin-bottom: 10px;
+                opacity: 0.9;
+            }
+            .result-price {
+                font-size: 48px;
+                font-weight: bold;
+                margin: 20px 0;
+            }
+            .success {
+                color: #4CAF50;
+                font-weight: bold;
+                background: rgba(0,0,0,0.1);
+                padding: 10px;
+                border-radius: 3px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>House Price Prediction</h1>
+            
+            <div class="input-section">
+                <h2>Property Details - Medapally</h2>
+                <div class="input-grid">
+                    <div class="input-item">
+                        <div class="label">Longitude</div>
+                        <div class="value">-122.25</div>
+                    </div>
+                    <div class="input-item">
+                        <div class="label">Latitude</div>
+                        <div class="value">37.85</div>
+                    </div>
+                    <div class="input-item">
+                        <div class="label">Housing Age</div>
+                        <div class="value">25 years</div>
+                    </div>
+                    <div class="input-item">
+                        <div class="label">Total Rooms</div>
+                        <div class="value">1500</div>
+                    </div>
+                    <div class="input-item">
+                        <div class="label">Bedrooms</div>
+                        <div class="value">4</div>
+                    </div>
+                    <div class="input-item">
+                        <div class="label">Population</div>
+                        <div class="value">1200</div>
+                    </div>
+                    <div class="input-item">
+                        <div class="label">Households</div>
+                        <div class="value">400</div>
+                    </div>
+                    <div class="input-item">
+                        <div class="label">Median Income</div>
+                        <div class="value">$5.50,000</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <div class="result-label">Predicted House Price</div>
+                <div class="result-price">$308,281.06</div>
+                <div class="success">[PREDICTED] Prediction Successful</div>
+            </div>
+        </div>
+    </body>
+    </html>
+    
