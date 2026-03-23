@@ -9,3 +9,5 @@ __pycache__/
 venv/
 artifacts/
 *.pkl
+echo artifacts/ >> .gitignore
+echo *.pkl >> .gitignore
