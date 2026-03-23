@@ -16,10 +16,8 @@ class ModelTrainer:
 
         param_grids = {
             "RandomForest": {
-                "n_estimators": [100, 150, 200],
-                "max_depth": [None, 8, 12],
-                "min_samples_split": [2, 5, 8],
-                "min_samples_leaf": [1, 2, 4]
+                "n_estimators": [50, 100],
+                "max_depth": [10, None]
             }
         }
 
@@ -27,28 +25,17 @@ class ModelTrainer:
         tuning_info = {}
 
         for name, model in base_models.items():
-            if name in param_grids:
-                grid = GridSearchCV(
-                    estimator=model,
-                    param_grid=param_grids[name],
-                    cv=5,
-                    scoring="r2",
-                    n_jobs=-1,
-                    verbose=0
-                )
-                grid.fit(X_train, y_train)
-                tuned_models[name] = grid.best_estimator_
-                tuning_info[name] = grid.best_params_
-            else:
-                model.fit(X_train, y_train)
-                tuned_models[name] = model
-                tuning_info[name] = "default"
+            print(f"Training {name}...")
+            model.fit(X_train, y_train)
+            tuned_models[name] = model
+            tuning_info[name] = "default parameters"
 
         report = {}
         for name, model in tuned_models.items():
             y_pred = model.predict(X_test)
             r2 = r2_score(y_test, y_pred)
-            rmse = mean_squared_error(y_test, y_pred, squared=False)
+            mse = mean_squared_error(y_test, y_pred)
+            rmse = mse ** 0.5
             mae = mean_absolute_error(y_test, y_pred)
             mape = mean_absolute_percentage_error(y_test, y_pred)
 

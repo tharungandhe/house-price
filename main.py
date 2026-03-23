@@ -65,14 +65,21 @@ if __name__ == "__main__":
                 <tr>
                     <th>Model Name</th>
                     <th>R² Score</th>
+                    <th>RMSE</th>
+                    <th>MAE</th>
+                    <th>MAPE</th>
                 </tr>
     """
     
-    for model_name, score in report.items():
+    for model_name, metrics in report.items():
+        r2 = metrics['r2']
+        rmse = metrics['rmse']
+        mae = metrics['mae']
+        mape = metrics['mape']
         if model_name == best_model_name:
-            html_content += f'<tr class="best-model"><td>{model_name}</td><td>{score:.4f}</td></tr>'
+            html_content += f'<tr class="best-model"><td>{model_name}</td><td>{r2:.4f}</td><td>{rmse:.4f}</td><td>{mae:.4f}</td><td>{mape:.4f}</td></tr>'
         else:
-            html_content += f'<tr><td>{model_name}</td><td>{score:.4f}</td></tr>'
+            html_content += f'<tr><td>{model_name}</td><td>{r2:.4f}</td><td>{rmse:.4f}</td><td>{mae:.4f}</td><td>{mape:.4f}</td></tr>'
     
     html_content += """
             </table>
