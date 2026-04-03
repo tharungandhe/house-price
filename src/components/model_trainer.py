@@ -25,10 +25,21 @@ class ModelTrainer:
         tuning_info = {}
 
         for name, model in base_models.items():
-            print(f"Training {name}...")
-            model.fit(X_train, y_train)
-            tuned_models[name] = model
-            tuning_info[name] = "default parameters"
+            if name in param_grids:
+                print(f"Tuning {name} with GridSearchCV...")
+                grid_search = GridSearchCV(model, param_grids[name], cv=3, scoring='r2', n_jobs=-1)
+                grid_search.fit(X_train, y_train)
+                tuned_models[name] = grid_search.best_estimator_
+                tuning_info[name] = {
+                    "best_params": grid_search.best_params_,
+                    "best_score": grid_search.best_score_
+                }
+                print(f"Best params for {name}: {grid_search.best_params_}")
+            else:
+                print(f"Training {name} with default parameters...")
+                model.fit(X_train, y_train)
+                tuned_models[name] = model
+                tuning_info[name] = "default parameters"
 
         report = {}
         for name, model in tuned_models.items():

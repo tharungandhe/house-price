@@ -1,5 +1,5 @@
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
@@ -19,17 +19,24 @@ class DataPreprocessing:
         X_test=test_df.drop("median_house_value",axis=1)
         y_test=test_df["median_house_value"]
 
-        # Select only numeric columns
-        num_features=X_train.select_dtypes(include=['int64', 'float64']).columns.tolist()
+        # Select numeric and categorical columns
+        num_features = X_train.select_dtypes(include=['int64', 'float64']).columns.tolist()
+        cat_features = X_train.select_dtypes(include=['object']).columns.tolist()
 
-        # Create a pipeline with imputer and scaler
-        numeric_pipeline=Pipeline([
-            ("imputer",SimpleImputer(strategy='mean')),
-            ("scaler",StandardScaler())
+        # Create pipelines
+        numeric_pipeline = Pipeline([
+            ("imputer", SimpleImputer(strategy='mean')),
+            ("scaler", StandardScaler())
         ])
 
-        preprocessor=ColumnTransformer([
-            ("num",numeric_pipeline,num_features)
+        categorical_pipeline = Pipeline([
+            ("imputer", SimpleImputer(strategy='most_frequent')),
+            ("encoder", OneHotEncoder(handle_unknown='ignore'))
+        ])
+
+        preprocessor = ColumnTransformer([
+            ("num", numeric_pipeline, num_features),
+            ("cat", categorical_pipeline, cat_features)
         ])
 
         X_train=preprocessor.fit_transform(X_train)
