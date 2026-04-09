@@ -1,100 +1,51 @@
-from src.pipeline.trainer_pipeline import TrainPipeline
-import webbrowser
-import os
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error, mean_absolute_percentage_error
+import numpy as np
+import joblib
 
-if __name__ == "__main__":
+# Load dataset
+df = pd.read_csv("house/1553768847-housing.csv")
 
-    print("Starting Training Pipeline...")
+# Handle missing values
+df["total_bedrooms"] = df["total_bedrooms"].fillna(df["total_bedrooms"].median())
 
-    pipeline = TrainPipeline()
+# Features & target (Drop ocean_proximity to match streamlit input)
+X = df.drop(["median_house_value", "ocean_proximity"], axis=1)
+y = df["median_house_value"]
 
-    best_model, report, best_model_name = pipeline.start_training() # type: ignore
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
-    print("Training Completed")
-    
-    # Generate HTML report
-    html_content = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Model Training Results</title>
-        <style>
-            body {{
-                font-family: Arial, sans-serif;
-                margin: 40px;
-                background-color: #f4f4f4;
-            }}
-            h1 {{
-                color: #333;
-            }}
-            .report {{
-                background-color: white;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            }}
-            table {{
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }}
-            th, td {{
-                border: 1px solid #ddd;
-                padding: 12px;
-                text-align: left;
-            }}
-            th {{
-                background-color: #4CAF50;
-                color: white;
-            }}
-            tr:nth-child(even) {{
-                background-color: #f9f9f9;
-            }}
-            .best-model {{
-                background-color: #fff3cd;
-                font-weight: bold;
-            }}
-        </style>
-    </head>
-    <body>
-        <div class="report">
-            <h1>Model Training Results</h1>
-            <h2>Best Model: <span style="color: #4CAF50;">{best_model_name}</span></h2>
-            <h3>Model Performance Metrics</h3>
-            <table>
-                <tr>
-                    <th>Model Name</th>
-                    <th>R² Score</th>
-                    <th>RMSE</th>
-                    <th>MAE</th>
-                    <th>MAPE</th>
-                </tr>
-    """
-    
-    for model_name, metrics in report.items():
-        r2 = metrics['r2']
-        rmse = metrics['rmse']
-        mae = metrics['mae']
-        mape = metrics['mape']
-        if model_name == best_model_name:
-            html_content += f'<tr class="best-model"><td>{model_name}</td><td>{r2:.4f}</td><td>{rmse:.4f}</td><td>{mae:.4f}</td><td>{mape:.4f}</td></tr>'
-        else:
-            html_content += f'<tr><td>{model_name}</td><td>{r2:.4f}</td><td>{rmse:.4f}</td><td>{mae:.4f}</td><td>{mape:.4f}</td></tr>'
-    
-    html_content += """
-            </table>
-            <p><em>Training completed successfully!</em></p>
-        </div>
-    </body>
-    </html>
-    """
-    
-    # Save HTML to file
-    html_path = "artifacts/training_results.html"
-    os.makedirs("artifacts", exist_ok=True)
-    with open(html_path, "w") as f:
-        f.write(html_content)
-    
-    # Open in browser
-    webbrowser.open("file://" + os.path.abspath(html_path))
-    print(f"Results saved to: {html_path}")
+# Train Linear Regression
+print("Training Linear Regression...")
+lr_model = LinearRegression()
+lr_model.fit(X_train, y_train)
+lr_pred = lr_model.predict(X_test)
+
+print("\n--- Linear Regression Performance ---")
+print(f"Accuracy (R² Score): {r2_score(y_test, lr_pred) * 100:.2f}%")
+print(f"Root Mean Squared Error (RMSE): ${np.sqrt(mean_squared_error(y_test, lr_pred)):,.2f}")
+print(f"Mean Absolute Error (MAE): ${mean_absolute_error(y_test, lr_pred):,.2f}")
+print(f"Mean Absolute Percentage Error (MAPE): {mean_absolute_percentage_error(y_test, lr_pred) * 100:.2f}%")
+print("-------------------------------------\n")
+
+# Train Random Forest
+print("Training Random Forest... (this might take a few seconds)")
+rf_model = RandomForestRegressor(n_estimators=100, max_depth=10, random_state=42)
+rf_model.fit(X_train, y_train)
+rf_pred = rf_model.predict(X_test)
+
+print("\n--- Random Forest Performance ---")
+print(f"Accuracy (R² Score): {r2_score(y_test, rf_pred) * 100:.2f}%")
+print(f"Root Mean Squared Error (RMSE): ${np.sqrt(mean_squared_error(y_test, rf_pred)):,.2f}")
+print(f"Mean Absolute Error (MAE): ${mean_absolute_error(y_test, rf_pred):,.2f}")
+print(f"Mean Absolute Percentage Error (MAPE): {mean_absolute_percentage_error(y_test, rf_pred) * 100:.2f}%")
+print("-------------------------------------\n")
+
+# ✅ SAVE AFTER TRAINING (IMPORTANT)
+joblib.dump(rf_model, "model.pkl")
+
+print("Random Forest (Best Model) trained and saved!")
